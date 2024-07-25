@@ -8,7 +8,7 @@ Install
 
 Add to your Gemfile:
 
-    gem 'spree_payu', github: 'cloudsailor/spree_payu', branch: 'develop'
+    gem 'spree_payu', github: 'cloudsailor/spree_payu', branch: 'master'
 
 and run
 
