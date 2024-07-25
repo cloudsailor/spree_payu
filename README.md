@@ -1,7 +1,6 @@
 Spree PayU
 ====================
 
-This is fork of matfiz/spree_payu
 PayU payment system for Spree (>= 4.5)
 
 Install
