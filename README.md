@@ -9,7 +9,7 @@ Install
 
 Add to your Gemfile:
 
-    gem 'spree_payu', github: 'cloudsailor/spree_payu'
+    gem 'spree_payu', github: 'cloudsailor/spree_payu', branch: 'develop'
 
 and run
 
