@@ -1,0 +1,5 @@
+---
+pl:
+  payu:
+    info: 'Kontynuuj, aby zapłacić przy użyciu serwisu PayU'
+    redirect_to_payment: 'Przekieruj do płatności'

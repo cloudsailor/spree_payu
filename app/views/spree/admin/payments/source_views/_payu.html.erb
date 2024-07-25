@@ -1,0 +1,14 @@
+<p>
+  <%= t('payu.info') %>
+</p>
+<p>
+  <%= t('payu.token') %>
+  <%= @payment&.public_metadata.fetch('token', '') %>
+</p>
+
+<p>
+  <% if @payment&.public_metadata.fetch('payment_url', '').present? %>
+    <%= t('payu.url') %>
+    <%= link_to @payment&.public_metadata.fetch('payment_url', ''), target: "_blank" %>
+  <% end %>
+</p>
