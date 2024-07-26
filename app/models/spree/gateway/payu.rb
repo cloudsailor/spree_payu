@@ -65,11 +65,7 @@ module Spree
 
       if (200..303).include? response.status
         response_body = JSON.parse(response.body)
-        Rails.logger.debug(response_body)
-        Rails.logger.debug("b"*100)
         payment.update(public_metadata: { token: response_body['orderId'], payment_url: (response_body['redirectUri']+ "&lang=#{order.billing_address.country.iso.downcase}") })
-        Rails.logger.debug(response_body['orderId'])
-        Rails.logger.debug(payment)
       else
         Rails.logger.warn("register_order #{order.id}, payment_id: #{payment_id} failed => #{response.inspect}")
         nil
@@ -161,14 +157,14 @@ module Spree
           faraday.request :authorization, 'Bearer', authorize
         end
 
-        response = conn.put do |req|
+        response = conn.post do |req|
           req.headers['Content-Type'] = 'application/json'
         end
 
         if response.success?
           return true
         else
-          Rails.logger.warn("Verify_transaction#{payment.order.id} failed => #{response.inspect}")
+          Rails.logger.warn("Verify_transaction #{payment.order.id} failed => #{response.inspect}")
           return false
         end
       end
