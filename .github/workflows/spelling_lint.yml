@@ -1,34 +1,25 @@
 ---
-name: Lint Code Spelling
-
 on: push
 
 jobs:
-  codespell:
-    name: Check spelling all files with codespell
+  push:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
+
+    permissions:
+      contents: write
+      id-token: write
+
+    # If you configured a GitHub environment on RubyGems, you must use it here.
+    environment: release
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      # Set up
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install codespell
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Check spelling with codespell
-        run: codespell --ignore-words=codespell.txt || exit 0
-  misspell:
-    name: Check spelling all files in commit with misspell
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install
-        run: wget -O - -q https://git.io/misspell | sh -s -- -b .
-      - name: Misspell
-        run: git ls-files --empty-directory | xargs ./misspell -i 'aircrafts,devels,invertions' -error
+          bundler-cache: true
+          ruby-version: ruby
+
+      # Release
+      - uses: rubygems/release-gem@v1
