@@ -27,9 +27,3 @@ You'll have to set the following parameters:
 
 In Spree Admin zone you have to create new payment method and select *Spree::Gateway::Payu* as a provider.
 I recommend to test it first - just select *test mode* in payment method settings and it will use sandbox platform instead of the production one.
-
-------------------------------------------------------------------------------
-License
-------------------------------------------------------------------------------
-
-Copyright (c) 2024 - Cloud Sailor AS, released under the New BSD License All rights reserved.
