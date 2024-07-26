@@ -73,11 +73,12 @@ module Spree
     end
 
     def register_order_payload(order, payment, gateway_id)
+      ip_address = order.last_ip_address || Socket.ip_address_list.find { |ai| ai.ipv4? && !ai.ipv4_loopback? }.ip_address
       {
-        customerIp: '127.0.0.1',
+        customerIp: ip_address,
         merchantPosId: preferred_payu_pos_id,
         description: order.store.name,
-        currencyCode: 'PLN',
+        currencyCode: order.currency,
         totalAmount: amount(order.total),
         products: items_payload(order.line_items),
         continueUrl: preferred_return_url,
@@ -88,7 +89,13 @@ module Spree
           phone: order.billing_address.phone,
           firstName: order.billing_address.firstname,
           lastName: order.billing_address.lastname,
-          language: order.billing_address.country.iso.downcase
+          language: order.billing_address.country.iso.downcase,
+          delivery: {
+            street: order.shipping_address.address1,
+            postalCode: order.shipping_address.zipcode,
+            city: order.shipping_address.city,
+            countryCode: order.shipping_address.country.iso
+          }
         }
       }
     end
