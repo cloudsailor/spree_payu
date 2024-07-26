@@ -10,7 +10,7 @@ jobs:
       id-token: write
 
     # If you configured a GitHub environment on RubyGems, you must use it here.
-    environment: release
+    # environment: release
 
     steps:
       # Set up
