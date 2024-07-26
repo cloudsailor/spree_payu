@@ -10,8 +10,7 @@ Gem::Specification.new do |s|
 
   s.author            = 'Cloud Sailor AS'
   s.email             = 'support@cloudsailor.com'
-  # s.homepage          = 'https://github.com/matfiz/spree_payu'
-  # s.rubyforge_project = 'actionmailer'
+  s.homepage          = 'https://github.com/cloudsailor/spree_payu'
 
   s.files        = Dir['CHANGELOG', 'README.md', 'LICENSE', 'lib/**/*', 'app/**/*']
   s.require_path = 'lib'
