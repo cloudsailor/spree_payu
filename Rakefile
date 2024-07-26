@@ -6,7 +6,7 @@ require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
 
-spec = eval(File.read('spree_dotpay_pl_payment.gemspec'))
+spec = eval(File.read('spree_payu.gemspec'))
 
 Rake::GemPackageTask.new(spec) do |p|
   p.gem_spec = spec
@@ -24,8 +24,3 @@ task :default => [ :spec ]
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new
-
-# require 'cucumber/rake/task'
-# Cucumber::Rake::Task.new do |t|
-#   t.cucumber_opts = %w{--format pretty}
-# end

@@ -65,11 +65,7 @@ module Spree
 
       if (200..303).include? response.status
         response_body = JSON.parse(response.body)
-        Rails.logger.debug(response_body)
-        Rails.logger.debug("b"*100)
         payment.update(public_metadata: { token: response_body['orderId'], payment_url: (response_body['redirectUri']+ "&lang=#{order.billing_address.country.iso.downcase}") })
-        Rails.logger.debug(response_body['orderId'])
-        Rails.logger.debug(payment)
       else
         Rails.logger.warn("register_order #{order.id}, payment_id: #{payment_id} failed => #{response.inspect}")
         nil
@@ -77,11 +73,12 @@ module Spree
     end
 
     def register_order_payload(order, payment, gateway_id)
+      ip_address = order.last_ip_address || Socket.ip_address_list.find { |ai| ai.ipv4? && !ai.ipv4_loopback? }.ip_address
       {
-        customerIp: '127.0.0.1',
+        customerIp: ip_address,
         merchantPosId: preferred_payu_pos_id,
         description: order.store.name,
-        currencyCode: 'PLN',
+        currencyCode: order.currency,
         totalAmount: amount(order.total),
         products: items_payload(order.line_items),
         continueUrl: preferred_return_url,
@@ -92,7 +89,13 @@ module Spree
           phone: order.billing_address.phone,
           firstName: order.billing_address.firstname,
           lastName: order.billing_address.lastname,
-          language: order.billing_address.country.iso.downcase
+          language: order.billing_address.country.iso.downcase,
+          delivery: {
+            street: order.shipping_address.address1,
+            postalCode: order.shipping_address.zipcode,
+            city: order.shipping_address.city,
+            countryCode: order.shipping_address.country.iso
+          }
         }
       }
     end
@@ -161,14 +164,14 @@ module Spree
           faraday.request :authorization, 'Bearer', authorize
         end
 
-        response = conn.put do |req|
+        response = conn.post do |req|
           req.headers['Content-Type'] = 'application/json'
         end
 
         if response.success?
           return true
         else
-          Rails.logger.warn("Verify_transaction#{payment.order.id} failed => #{response.inspect}")
+          Rails.logger.warn("Verify_transaction #{payment.order.id} failed => #{response.inspect}")
           return false
         end
       end
