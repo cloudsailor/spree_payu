@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
 
   s.metadata = {
     "bug_tracker_uri"   => "https://github.com/cloudsailor/spree_payu/issues",
-    "changelog_uri"     => "https://github.com/cloudsailor/spree_payu/releases/tag/v#{s.version}",
-    "source_code_uri"   => "https://github.com/cloudsailor/spree_payu/tree/v#{s.version}",
+    "changelog_uri"     => "https://github.com/cloudsailor/spree_payu/releases/tag/#{s.version}",
+    "source_code_uri"   => "https://github.com/cloudsailor/spree_payu/tree/#{s.version}",
   }
 
   s.authors           = ['Cloud Sailor AS', 'Cloud Sailor Sp. z o.o.']
