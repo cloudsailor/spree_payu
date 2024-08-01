@@ -1,3 +1,12 @@
+Version 1.2.0:
+ - Fixed readme
+ - Merge remote-tracking branch 'origin/develop' into develop
+ - Fixed language name cs
+ - Fixed authors
+ - Merge branch 'release-1.1.0' into develop
+ - Merge branch 'release-1.1.0'
+ - Merge branch 'release-1.0.0'
+
 Version 1.1.0:
  - Merge branch 'release-1.0.0' into develop
  - Fixed gemspec docs
