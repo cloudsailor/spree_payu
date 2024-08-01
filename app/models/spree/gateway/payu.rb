@@ -89,7 +89,7 @@ module Spree
           phone: order.billing_address.phone,
           firstName: order.billing_address.firstname,
           lastName: order.billing_address.lastname,
-          language: order.billing_address.country.iso.downcase,
+          language: language(order.billing_address.country.iso),
           delivery: {
             street: order.shipping_address.address1,
             postalCode: order.shipping_address.zipcode,
@@ -189,6 +189,13 @@ module Spree
       private_metadata[:amount] = amount
       payment.update(private_metadata: private_metadata)
       true
+    end
+
+    def language(country_iso)
+      country_iso = country_iso&.downcase
+      country_iso = 'cs' if country_iso == 'cz'
+
+      country_iso || 'en'
     end
   end
 end
