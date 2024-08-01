@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
     "source_code_uri"   => "https://github.com/cloudsailor/spree_payu/tree/#{s.version}",
   }
 
-  s.authors           = ['Cloud Sailor AS', 'Cloud Sailor Sp. z o.o.']
+  s.authors           = ['Cloud Sailor']
   s.email             = 'support@cloudsailor.com'
   s.homepage          = 'https://github.com/cloudsailor/spree_payu'
 
