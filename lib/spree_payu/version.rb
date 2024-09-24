@@ -1,5 +1,5 @@
 module SpreePayuGateway
-  VERSION = '1.3.0'.freeze
+  VERSION = '1.3.1'.freeze
 
   def self.version
     VERSION
