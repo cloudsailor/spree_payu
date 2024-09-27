@@ -82,7 +82,7 @@ module Spree
         totalAmount: amount(order.total),
         products: items_payload(order.line_items),
         continueUrl: preferred_return_url,
-        notifyUrl: "#{preferred_return_status_url}/payu/comeback/#{gateway_id}/#{order.id}",
+        notifyUrl: "#{preferred_return_status_url}/gateway/payu/comeback/#{gateway_id}/#{order.id}",
         extOrderId: "#{order.number}|#{payment.number}",
         buyer: {
           email: order.email,
