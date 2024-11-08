@@ -19,7 +19,7 @@ module Spree
       false
     end
 
-    def cancel(order_id)
+    def cancel(order_id, *args)
       Rails.logger.debug("Starting cancellation for #{order_id}")
 
       Rails.logger.debug("Spree order #{order_id} has been canceled.")
