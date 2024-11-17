@@ -1,3 +1,8 @@
+Version 1.5.0:
+ - Merge branch 'release-1.4.0'
+ - Added capture void payment
+ - Merge branch 'master' into develop
+
 Version 1.3.6:
 
 
