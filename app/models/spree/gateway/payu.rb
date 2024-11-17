@@ -6,6 +6,9 @@ module Spree
     preference :payu_client_id, :string
     preference :payu_pos_id, :string
     preference :payu_second_key, :string
+    preference :payu_pay_methods_type, :string
+    preference :payu_pay_methods_value, :string
+    preference :payu_second_key, :string
     preference :payu_client_secret, :string
     preference :test_mode, :boolean, default: false
     preference :return_url, :string, default: "http://localhost:3000"
@@ -74,30 +77,43 @@ module Spree
 
     def register_order_payload(order, payment, gateway_id)
       ip_address = order.last_ip_address || Socket.ip_address_list.find { |ai| ai.ipv4? && !ai.ipv4_loopback? }.ip_address
-      {
-        customerIp: ip_address,
-        merchantPosId: preferred_payu_pos_id,
-        description: order.store.name,
-        currencyCode: order.currency,
-        totalAmount: amount(order.total),
-        products: items_payload(order.line_items),
-        continueUrl: preferred_return_url,
-        notifyUrl: "#{preferred_return_status_url}/gateway/payu/comeback/#{gateway_id}/#{order.id}",
-        extOrderId: "#{order.number}|#{payment.number}",
-        buyer: {
-          email: order.email,
-          phone: order.billing_address.phone,
-          firstName: order.billing_address.firstname,
-          lastName: order.billing_address.lastname,
-          language: language(order.billing_address.country.iso),
-          delivery: {
-            street: order.shipping_address.address1,
-            postalCode: order.shipping_address.zipcode,
-            city: order.shipping_address.city,
-            countryCode: order.shipping_address.country.iso
+      payload = {
+                  customerIp: ip_address,
+                  merchantPosId: preferred_payu_pos_id,
+                  description: order.store.name,
+                  currencyCode: order.currency,
+                  totalAmount: amount(order.total),
+                  products: items_payload(order.line_items),
+                  continueUrl: preferred_return_url,
+                  notifyUrl: "#{preferred_return_status_url}/gateway/payu/comeback/#{gateway_id}/#{order.id}",
+                  extOrderId: "#{order.number}|#{payment.number}",
+                  buyer: {
+                    email: order.email,
+                    phone: order.billing_address.phone,
+                    firstName: order.billing_address.firstname,
+                    lastName: order.billing_address.lastname,
+                    language: language(order.billing_address.country.iso),
+                    delivery: {
+                      street: order.shipping_address.address1,
+                      postalCode: order.shipping_address.zipcode,
+                      city: order.shipping_address.city,
+                      countryCode: order.shipping_address.country.iso
+                    }
+                  }
+                }
+      if preferred_payu_pay_methods_type.present? && preferred_payu_pay_methods_value.present?
+        pay_methods = {
+          pay_methods: {
+            payMethod: {
+              type: preferred_payu_pay_methods_type,
+              value: preferred_payu_pay_methods_value,
+              amount: amount(order.total)
+            }
           }
         }
-      }
+        payload.merge(pay_methods)
+      end
+      payload
     end
 
     def items_payload(line_items)
