@@ -68,6 +68,7 @@ module Spree
 
       if (200..303).include? response.status
         response_body = JSON.parse(response.body)
+        Rails.logger.debug("create order - #{response.inspect}")
         payment.update(public_metadata: { token: response_body['orderId'], payment_url: (response_body['redirectUri']+ "&lang=#{order.billing_address.country.iso.downcase}") })
       else
         Rails.logger.warn("register_order #{order.id}, payment_id: #{payment_id} failed => #{response.inspect}")
