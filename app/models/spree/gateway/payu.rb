@@ -104,7 +104,7 @@ module Spree
                 }
       if preferred_payu_pay_methods_type.present? && preferred_payu_pay_methods_value.present?
         pay_methods = {
-          pay_methods: {
+          payMethods: {
             payMethod: {
               type: preferred_payu_pay_methods_type,
               value: preferred_payu_pay_methods_value,
