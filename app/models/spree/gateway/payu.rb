@@ -111,7 +111,7 @@ module Spree
             }
           }
         }
-        payload.merge(pay_methods)
+        payload.merge!(pay_methods)
       end
       payload
     end
