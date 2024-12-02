@@ -81,7 +81,7 @@ module Spree
       payload = {
                   customerIp: ip_address,
                   merchantPosId: preferred_payu_pos_id,
-                  description: order.store.name,
+                  description: order.number,
                   currencyCode: order.currency,
                   totalAmount: amount(order.total),
                   products: items_payload(order.line_items),
