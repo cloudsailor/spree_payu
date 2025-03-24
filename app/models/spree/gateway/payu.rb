@@ -1,5 +1,6 @@
 require 'faraday'
 require 'bigdecimal'
+require 'countries'
 
 module Spree
   class Gateway::Payu < PaymentMethod
@@ -209,10 +210,8 @@ module Spree
     end
 
     def language(country_iso)
-      country_iso = country_iso&.downcase
-      country_iso = 'cs' if country_iso == 'cz'
-
-      country_iso || 'en'
+      country = ISO3166::Country.new(country_iso)
+      country&.languages&.first || 'en'
     end
 
     def actions
