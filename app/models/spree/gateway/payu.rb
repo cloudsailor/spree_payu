@@ -14,6 +14,7 @@ module Spree
     preference :test_mode, :boolean, default: false
     preference :return_url, :string, default: "http://localhost:3000"
     preference :return_status_url, :string, default: "http://localhost:3000"
+    preference :delivery_limit_czk, :integer
 
     def payment_profiles_supported?
       false
@@ -21,6 +22,12 @@ module Spree
 
     def source_required?
       false
+    end
+
+    def available_for_order?(order)
+      return true unless order.currency == 'CZK' && name.include?('Twisto')
+
+      order.total < preferred_delivery_limit_czk
     end
 
     def cancel(order_id, *args)
