@@ -28,8 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency('faraday')
   s.add_dependency('openssl')
 
-  spree_version = '>= 4.6.0', '< 5.0'
-  s.add_dependency 'spree_backend', spree_version
+  spree_version =  '~> 5.0.0'
+  s.add_dependency 'spree_admin', spree_version
   s.add_dependency 'spree_core', spree_version
   s.add_dependency 'spree_auth_devise'
   s.add_dependency 'countries'
