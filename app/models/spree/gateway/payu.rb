@@ -14,6 +14,8 @@ module Spree
     preference :test_mode, :boolean, default: false
     preference :return_url, :string, default: "http://localhost:3000"
     preference :return_status_url, :string, default: "http://localhost:3000"
+    preference :max_payment_amount, :integer
+    preference :min_payment_amount, :integer
 
     def payment_profiles_supported?
       false
@@ -21,6 +23,13 @@ module Spree
 
     def source_required?
       false
+    end
+
+    def available_for_order?(order)
+      return false if min_payment_amount.present? && order.total <= min_payment_amount
+      return false if max_payment_amount.present? && order.total >= max_payment_amount
+
+      true
     end
 
     def cancel(order_id, *args)
