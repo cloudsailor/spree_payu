@@ -86,7 +86,7 @@ module Spree
                   currencyCode: order.currency,
                   totalAmount: amount(order.total),
                   products: items_payload(order.line_items),
-                  continueUrl: preferred_return_url,
+                  continueUrl: "#{preferred_return_url}/orders/#{order.number}",
                   notifyUrl: "#{preferred_return_status_url}/gateway/payu/comeback/#{gateway_id}/#{order.id}",
                   extOrderId: "#{order.number}|#{payment.number}",
                   buyer: {
