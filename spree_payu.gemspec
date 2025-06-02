@@ -32,5 +32,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_backend', spree_version
   s.add_dependency 'spree_core', spree_version
   s.add_dependency 'spree_auth_devise'
+  s.add_dependency 'countries'
   s.add_dependency  'bigdecimal'
 end

@@ -1,5 +1,6 @@
 require 'faraday'
 require 'bigdecimal'
+require 'countries'
 
 module Spree
   class Gateway::Payu < PaymentMethod
@@ -13,6 +14,8 @@ module Spree
     preference :test_mode, :boolean, default: false
     preference :return_url, :string, default: "http://localhost:3000"
     preference :return_status_url, :string, default: "http://localhost:3000"
+    preference :max_payment_amount, :integer
+    preference :min_payment_amount, :integer
 
     def payment_profiles_supported?
       false
@@ -20,6 +23,13 @@ module Spree
 
     def source_required?
       false
+    end
+
+    def available_for_order?(order)
+      return false if preferred_min_payment_amount.present? && order.total <= preferred_min_payment_amount
+      return false if preferred_max_payment_amount.present? && order.total >= preferred_max_payment_amount
+
+      true
     end
 
     def cancel(order_id, *args)
@@ -209,10 +219,8 @@ module Spree
     end
 
     def language(country_iso)
-      country_iso = country_iso&.downcase
-      country_iso = 'cs' if country_iso == 'cz'
-
-      country_iso || 'en'
+      country = ISO3166::Country.new(country_iso)
+      country&.languages&.first || 'en'
     end
 
     def actions
