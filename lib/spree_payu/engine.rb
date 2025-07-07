@@ -10,6 +10,8 @@ module SpreePayu
 
     config.after_initialize do |app|
       app.config.spree.payment_methods << Spree::Gateway::Payu
+      app.config.spree.payment_methods << Spree::Gateway::PayuRaty
+
     end
 
     def self.activate

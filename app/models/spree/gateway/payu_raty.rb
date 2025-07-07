@@ -1,0 +1,1 @@
+class PayuRaty < Spree::Gateway::Payu ;end
