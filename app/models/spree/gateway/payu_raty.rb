@@ -1,1 +1,1 @@
-class PayuRaty < Spree::Gateway::Payu ;end
+class Spree::Gateway::PayuRaty < Spree::Gateway::Payu ;end
