@@ -10,7 +10,7 @@ module SpreePayu
 
     config.after_initialize do |app|
       app.config.spree.payment_methods << Spree::Gateway::Payu
-      app.config.spree.payment_methods << Spree::Gateway::PayuRaty
+      app.config.spree.payment_methods << Spree::Gateway::PayuInstallment
       app.config.spree.payment_methods << Spree::Gateway::Paypo
     end
 

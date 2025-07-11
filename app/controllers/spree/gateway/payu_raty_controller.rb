@@ -1,1 +1,0 @@
-class PayuRatyController < Spree::Gateway::PayuController; end

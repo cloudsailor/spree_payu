@@ -3,7 +3,7 @@ Spree PayU
 
 PayU payment system for Spree (>= 5.0.0). Allows to define separately following payment methods:
 - PayU
-- Payu Raty
+- Payu Installment
   - Polish payments only
   - 300,00 - 20000,00 PLN*
 - PayPo
@@ -12,7 +12,7 @@ PayU payment system for Spree (>= 5.0.0). Allows to define separately following 
 
 \*w depends on variant.
 
-The last Spree 4 supporting release is 1.7.0.
+The last Spree 4 supporting release is 1.7.x.
 
 Install
 =======
