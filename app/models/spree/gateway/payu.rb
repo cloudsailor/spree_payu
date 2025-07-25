@@ -218,6 +218,37 @@ module Spree
       true
     end
 
+    def transactions_url(payu_order_id)
+      if preferred_test_mode
+        "https://secure.snd.payu.com/api/v2_1/orders/#{payu_order_id}/transactions"
+      else
+        "https://secure.payu.com/api/v2_1/orders/#{payu_order_id}/transactions"
+      end
+    end
+
+    def fetch_transaction_pay_method(payu_order_id, klass)
+      # For skip if pay method is already specified
+      return unless klass == 'Spree::Gateway::PayuController'
+
+      conn = Faraday.new(url: transactions_url(payu_order_id)) do |faraday|
+        faraday.adapter Faraday.default_adapter
+        faraday.request :authorization, 'Bearer', authorize
+      end
+
+      response = conn.get do |req|
+        req.headers['Content-Type'] = 'application/json'
+      end
+      pay_method_code = JSON.parse(response.body).dig("transactions", -1, 'payMethod', 'value')
+      pay_method_name = PayuMethodMapper.name_for(pay_method_code)
+
+      if response.success?
+        pay_method_name.presence
+      else
+        Rails.logger.warn("Fetch transaction pay method for #{payu_order_id.id} failed => #{response.inspect}")
+        nil
+      end
+    end
+
     def language(country_iso)
       country = ISO3166::Country.new(country_iso)
       country&.languages&.first || 'en'

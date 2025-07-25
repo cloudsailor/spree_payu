@@ -3,3 +3,4 @@ en:
   payu:
     info: 'Continue to pay using PayU'
     redirect_to_payment: 'Redirect to payment'
+    pay_method: 'Pay method'
