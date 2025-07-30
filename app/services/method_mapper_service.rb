@@ -1,5 +1,7 @@
-class PayuMethodMapper
+class MethodMapperService
+  # Reference: https://developers.payu.com/europe/pl/docs/get-started/integration-overview/references/#pbl
   MAPPING = {
+    # Polskie przelewy internetowe PLN
     'blik'  => 'BLIK',
     'm'     => 'mTransfer - mBank',
     'w'     => 'Przelew24 - Santander (form. BZ WBK)',
@@ -19,11 +21,19 @@ class PayuMethodMapper
     'nstb'  => 'Nest bank',
     'plsb'  => 'Plus Bank',
     'wys'   => 'Bank Pocztowy',
-    'b'     => 'Przelew bankowy'
+    'b'     => 'Przelew bankowy',
+
+    # PayU Płacę Później i raty PLN:
+    'ai'       => 'PayU Raty',
+    'dpkl'     => 'Klarna',
+    'dpt'      => 'Twisto',
+    'dpp'      => 'PayPo',
+    'ppf'      => 'PragmaPay',
+    'blikbnpl' => 'BLIK PayU Płacę Później'
   }.freeze
 
   def self.name_for(code)
-    MAPPING[code.to_s] || code
+    MAPPING[code.to_s]
   end
 
   def self.all
