@@ -5,8 +5,8 @@ class AddPayMethodForPayuPayments
     insert_after: "erb[loud]:contains('link_to payment.payment_method.name')",
     text: <<~ERB
         <p class="mb-0 text-muted">
-          <%= I18n.t('payu.pay_method')+': ' %>
-          <strong><%= payment.public_metadata.fetch('pay_method', 'Unknown') %></strong>
+          <%= "#\{I18n.t('payu.pay_method')\}: " %>
+          <strong><%= payment.public_metadata.fetch('pay_method', I18n.t('payu.unknown')) %></strong>
         </p>
     ERB
   )

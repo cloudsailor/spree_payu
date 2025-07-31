@@ -4,6 +4,8 @@ require 'countries'
 
 module Spree
   class Gateway::Payu < PaymentMethod
+    class GatewayPayuError < StandardError; end
+
     preference :payu_client_id, :string
     preference :payu_pos_id, :string
     preference :payu_second_key, :string
@@ -81,9 +83,11 @@ module Spree
         Rails.logger.debug("create order - #{response.inspect}")
         payment.update(public_metadata: { token: response_body['orderId'], payment_url: (response_body['redirectUri']+ "&lang=#{order.billing_address.country.iso.downcase}") })
       else
-        Rails.logger.warn("register_order #{order.id}, payment_id: #{payment_id} failed => #{response.inspect}")
-        nil
+        raise GatewayPayuError, "register_order #{order.id}, payment_id: #{payment_id} failed => #{response.inspect}"
       end
+    rescue GatewayPayuError => e
+      Sentry.capture_exception(e)
+      nil
     end
 
     def register_order_payload(order, payment, gateway_id)
@@ -166,8 +170,10 @@ module Spree
         response_body = JSON.parse(response.body)
         response_body['access_token']
       else
-        Rails.logger.debug("Token: #{response.inspect}")
+        raise GatewayPayuError, "Token: #{response.inspect}"
       end
+    rescue GatewayPayuError => e
+      Sentry.capture_exception(e)
     end
 
     def verify_url(payu_order_id)
@@ -198,8 +204,7 @@ module Spree
         if response.success?
           return true
         else
-          Rails.logger.warn("Verify_transaction #{payment.order.id} failed => #{response.inspect}")
-          return false
+          raise GatewayPayuError, "Verify_transaction #{payment.order.id} failed => #{response.inspect}"
         end
       end
 
@@ -216,6 +221,9 @@ module Spree
       private_metadata[:amount] = amount
       payment.update(private_metadata: private_metadata)
       true
+    rescue GatewayPayuError => e
+      Sentry.capture_exception(e)
+      false
     end
 
     def transactions_url(payu_order_id)
@@ -241,9 +249,10 @@ module Spree
       if response.success?
         pay_method_name.presence
       else
-        Rails.logger.warn("Fetch transaction pay method for #{payu_order_id.id} failed => #{response.inspect}")
-        nil
+        raise GatewayPayuError, "Fetch transaction pay method for #{payu_order_id.id} failed => #{response.inspect}"
       end
+    rescue GatewayPayuError => e
+      Sentry.capture_exception(e)
     end
 
     def language(country_iso)
