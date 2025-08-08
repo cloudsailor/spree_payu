@@ -15,9 +15,8 @@ module Spree
         head :unprocessable_entity
       end
 
-      if payment.public_metadata['pay_method'].nil?
-        payment.public_metadata['pay_method'] = payment.payment_method.fetch_transaction_pay_method(payu_order_id)
-      end
+payment.public_metadata['pay_method'] ||= payment.payment_method.fetch_transaction_pay_method(payu_order_id)
+
 
       if payment.state == 'checkout' &&
         payment.payment_method.verify_transaction(params[:order][:status],
