@@ -14,7 +14,11 @@ module Spree
         Rails.logger.error "Payment not found for order: #{payu_order_id}"
         head :unprocessable_entity
       end
-      payment.public_metadata['pay_method'] = payment.payment_method.fetch_transaction_pay_method(payu_order_id)
+
+      if payment.public_metadata['pay_method'].nil?
+        payment.public_metadata['pay_method'] = payment.payment_method.fetch_transaction_pay_method(payu_order_id)
+      end
+
       if payment.state == 'checkout' &&
         payment.payment_method.verify_transaction(params[:order][:status],
                                                  payment,
