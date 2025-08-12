@@ -244,7 +244,9 @@ module Spree
         req.headers['Content-Type'] = 'application/json'
       end
       pay_method_code = JSON.parse(response.body).dig("transactions", -1, 'payMethod', 'value')
-      pay_method_name = ::MethodMapperService.name_for(pay_method_code)
+      payment_flow = JSON.parse(response.body).dig("transactions", -1, 'paymentFlow')
+
+      pay_method_name = ::MethodMapperService.name_for(pay_method_code, payment_flow)
 
       if response.success?
         pay_method_name.presence
