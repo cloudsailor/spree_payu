@@ -28,10 +28,15 @@ module Spree
     end
 
     def available_for_order?(order)
-      return false if preferred_min_payment_amount.present? && order.total <= preferred_min_payment_amount
-      return false if preferred_max_payment_amount.present? && order.total >= preferred_max_payment_amount
+      !below_min_payment_amount?(order) &&
+        !above_max_payment_amount?(order) &&
+        available_for_shipment_method?(order.shipments)
+    end
 
-      true
+    def available_for_shipment_method?(shipments)
+      shipping_method_ids ||= shipments.map { |shipment| shipment.shipping_method.id }.join(',')
+
+      preferred_delivery_method_ids.include?(shipping_method_ids)
     end
 
     def cancel(order_id, *args)
@@ -283,6 +288,14 @@ module Spree
     end
 
     private
+
+    def below_min_payment_amount?(order)
+      preferred_min_payment_amount.present? && order.total <= preferred_min_payment_amount
+    end
+
+    def above_max_payment_amount?(order)
+      preferred_max_payment_amount.present? && order.total >= preferred_max_payment_amount
+    end
 
     def simulated_successful_billing_response
       ActiveMerchant::Billing::Response.new(true, '', {}, {})
