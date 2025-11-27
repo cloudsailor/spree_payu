@@ -27,18 +27,6 @@ module Spree
       false
     end
 
-    def available_for_order?(order)
-      !below_min_payment_amount?(order) &&
-        !above_max_payment_amount?(order) &&
-        available_for_shipment_method?(order.shipments)
-    end
-
-    def available_for_shipment_method?(shipments)
-      shipping_method_ids ||= shipments.map { |shipment| shipment.shipping_method.id }.join(',')
-
-      preferred_delivery_method_ids.include?(shipping_method_ids)
-    end
-
     def cancel(order_id, *args)
       Rails.logger.debug("Starting cancellation for #{order_id}")
 
