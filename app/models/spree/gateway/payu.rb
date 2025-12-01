@@ -277,14 +277,6 @@ module Spree
 
     private
 
-    def below_min_payment_amount?(order)
-      preferred_min_payment_amount.present? && order.total <= preferred_min_payment_amount
-    end
-
-    def above_max_payment_amount?(order)
-      preferred_max_payment_amount.present? && order.total >= preferred_max_payment_amount
-    end
-
     def simulated_successful_billing_response
       ActiveMerchant::Billing::Response.new(true, '', {}, {})
     end
