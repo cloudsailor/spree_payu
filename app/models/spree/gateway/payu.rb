@@ -27,13 +27,6 @@ module Spree
       false
     end
 
-    def available_for_order?(order)
-      return false if preferred_min_payment_amount.present? && order.total <= preferred_min_payment_amount
-      return false if preferred_max_payment_amount.present? && order.total >= preferred_max_payment_amount
-
-      true
-    end
-
     def cancel(order_id, *args)
       Rails.logger.debug("Starting cancellation for #{order_id}")
 
