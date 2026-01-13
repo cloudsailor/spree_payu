@@ -50,7 +50,6 @@ module Spree
       url.present?
     end
   end
-  end
 end
 
 if ::Spree::CheckoutController
